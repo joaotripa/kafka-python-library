@@ -25,7 +25,7 @@ if __name__ == '__main__':
     consumer = Consumer(conf)
 
     # Subscribe to topic
-    consumer.subscribe(topic)
+    consumer.subscribe([topic])
 
     # Process messages
     try:

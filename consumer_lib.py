@@ -7,7 +7,8 @@
 # =============================================================================
 
 from confluent_kafka import Consumer
-from product import Product
+from uuid import uuid4
+
 import json
 import kafka_lib
 
@@ -24,6 +25,7 @@ class ConsumerEntity(object):
            
     """
     def __init__(self, conf):
+        consumer_group = "consumer_group_" + str(uuid4())
         self.consumer = Consumer({
             'bootstrap.servers': conf['bootstrap.servers'],
             #'sasl.mechanisms': conf['sasl.mechanisms'],
@@ -34,17 +36,23 @@ class ConsumerEntity(object):
             'auto.offset.reset': 'earliest',
         })
 
-    def subscribe(self, topic):
+    def subscribe(self, topics):
         """ 
-        Subscribe to topic
+        Subscribe to topics
         
         Args:
-            topic (str): topic name/id
+            topics (list): topics name/id
 
         Returns:
 
         """
-        self.consumer.subscribe([topic])
+        self.consumer.subscribe(topics)
+
+    def unsubscribe(self):
+        """ 
+        Unsubscribes all consumer topics
+        """
+        self.consumer.unsubscribe()
 
     def consume(self):
         """ 

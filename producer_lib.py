@@ -7,12 +7,9 @@
 # =============================================================================
 
 from confluent_kafka import Producer, KafkaError
-from product import Product
-from uuid import uuid4
-from productencoder import ProductEncoder
+
 import json
 import kafka_lib
-import random
 
 class ProducerEntity(object):
     """
@@ -46,7 +43,7 @@ class ProducerEntity(object):
             print("Produced record to topic {} partition [{}] @ offset {}"
                   .format(msg.topic(), msg.partition(), msg.offset()))
 
-    def produce(self, topic, key, value):
+    def produce(self, topic, key, value, encoder):
         """ 
         Produce records
         
@@ -61,7 +58,7 @@ class ProducerEntity(object):
             
         """
         record_key = json.dumps(key)
-        record_value = json.dumps(value,indent=4, cls=ProductEncoder)
+        record_value = json.dumps(value,indent=4, cls=encoder)
         print("Producing record: {}\t{}".format(record_key, record_value))
         self.producer.produce(topic, key=record_key, value=record_value, on_delivery=self.acked)
         self.producer.poll(0)

@@ -7,6 +7,7 @@
 # =============================================================================
 
 from producer_lib import ProducerEntity as Producer
+from productencoder import ProductEncoder
 from product import Product
 from uuid import uuid4
 
@@ -31,6 +32,6 @@ if __name__ == '__main__':
     #Producing Sample Messages
     for n in range(10):
         product = Product(prodID="product"+str(n),prodDesc="Simple Product",prodSpecs=random.randint(0,10))
-        producer.produce(topic, str(uuid4()), product)
+        producer.produce(topic, str(uuid4()), product, ProductEncoder)
 
     producer.flush()

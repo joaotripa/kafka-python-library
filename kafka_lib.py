@@ -6,6 +6,7 @@
 # =============================================================================
 
 import argparse, sys
+import constants as CONSTANTS
 from confluent_kafka import avro, KafkaError
 from confluent_kafka.admin import AdminClient, NewTopic
 from uuid import uuid4
@@ -61,8 +62,8 @@ def create_topic(conf, topic):
     })
     fs = a.create_topics([NewTopic(
          topic,
-         num_partitions=1,
-         replication_factor=1
+         num_partitions=CONSTANTS.PARTITIONS,
+         replication_factor=CONSTANTS.REPLICATION_FACTOR
     )])
     for topic, f in fs.items():
         try:
